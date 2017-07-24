@@ -9,6 +9,7 @@
     <Import_RootNamespace>GA_SDK_MONO_SHARED</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)CustomYieldInstruction.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Zip\Checksums\Adler32.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Zip\Checksums\CRC32.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Zip\Checksums\IChecksum.cs" />

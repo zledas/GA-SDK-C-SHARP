@@ -1,4 +1,4 @@
-# if !WINDOWS_WSA && !WINDOWS_UWP
+# if !WINDOWS_WSA && !WINDOWS_UWP && !WINDOWS_PHONE
 using System.Threading;
 
 namespace Foundation.Tasks

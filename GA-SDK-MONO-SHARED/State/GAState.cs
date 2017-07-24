@@ -511,7 +511,7 @@ namespace GameAnalyticsSDK.Net.State
 			GALogger.I("Use manual session handling: " + flag);
 		}
 
-#if WINDOWS_UWP || WINDOWS_WSA
+#if WINDOWS_UWP || WINDOWS_WSA || WINDOWS_PHONE
         public async static void InternalInitialize()
 #else
         public static void InternalInitialize()
@@ -528,7 +528,7 @@ namespace GameAnalyticsSDK.Net.State
 
 			Initialized = true;
 
-#if WINDOWS_UWP || WINDOWS_WSA
+#if WINDOWS_UWP || WINDOWS_WSA || WINDOWS_PHONE
             await StartNewSession();
 #else
             StartNewSession();
@@ -556,7 +556,7 @@ namespace GameAnalyticsSDK.Net.State
 			}
 		}
 
-#if WINDOWS_UWP || WINDOWS_WSA
+#if WINDOWS_UWP || WINDOWS_WSA || WINDOWS_PHONE
         public async static void ResumeSessionAndStartQueue()
 #else
         public static void ResumeSessionAndStartQueue()
@@ -570,7 +570,7 @@ namespace GameAnalyticsSDK.Net.State
 			GALogger.I("Resuming session.");
 			if(!SessionIsStarted())
 			{
-#if WINDOWS_UWP || WINDOWS_WSA
+#if WINDOWS_UWP || WINDOWS_WSA || WINDOWS_PHONE
                 await StartNewSession();
 #else
                 StartNewSession();
@@ -619,7 +619,7 @@ namespace GameAnalyticsSDK.Net.State
 				annotations["engine_version"] = GADevice.GameEngineVersion;
 			}
 
-#if WINDOWS_UWP
+#if WINDOWS_UWP // TODO: čia irgi WP8 pažiūrėti, kas darytis turi
             if (!string.IsNullOrEmpty(GADevice.AdvertisingId))
             {
                 annotations["uwp_aid"] = GADevice.AdvertisingId;
@@ -978,7 +978,7 @@ namespace GameAnalyticsSDK.Net.State
 		}
 #pragma warning restore 0162
 
-#if WINDOWS_UWP || WINDOWS_WSA
+#if WINDOWS_UWP || WINDOWS_WSA || WINDOWS_PHONE
         private async static System.Threading.Tasks.Task StartNewSession()
 #else
         private static void StartNewSession()
@@ -990,7 +990,7 @@ namespace GameAnalyticsSDK.Net.State
 			ValidateAndFixCurrentDimensions();
 
             // call the init call
-#if WINDOWS_UWP || WINDOWS_WSA
+#if WINDOWS_UWP || WINDOWS_WSA || WINDOWS_PHONE
             KeyValuePair<EGAHTTPApiResponse, JSONClass> initResponse = await GAHTTPApi.Instance.RequestInitReturningDict();
 #else
             KeyValuePair<EGAHTTPApiResponse, JSONClass> initResponse = GAHTTPApi.Instance.RequestInitReturningDict();

@@ -6,7 +6,7 @@ using System.Net;
 using System.IO;
 using GameAnalyticsSDK.Net.Logging;
 using Foundation.Tasks;
-#if WINDOWS_UWP || WINDOWS_WSA
+#if WINDOWS_UWP || WINDOWS_WSA || WINDOWS_PHONE
 using System.Threading.Tasks;
 #endif
 
@@ -32,7 +32,7 @@ namespace GameAnalyticsSDK.Net.Tasks
 		{
             AsyncTask.Run(() =>
 			{
-#if WINDOWS_UWP || WINDOWS_WSA
+#if WINDOWS_UWP || WINDOWS_WSA || WINDOWS_PHONE
                 DoInBackground(url).Wait();
 #else
                 DoInBackground(url);
@@ -40,7 +40,7 @@ namespace GameAnalyticsSDK.Net.Tasks
             });
         }
 
-#if WINDOWS_UWP || WINDOWS_WSA
+#if WINDOWS_UWP || WINDOWS_WSA || WINDOWS_PHONE
         protected async Task DoInBackground(string url)
 #else
         protected void DoInBackground(string url)
@@ -63,7 +63,7 @@ namespace GameAnalyticsSDK.Net.Tasks
 			{
 				HttpWebRequest request = WebRequest.Create(url) as HttpWebRequest;
 				request.Method = "POST";
-#if WINDOWS_UWP || WINDOWS_WSA
+#if WINDOWS_UWP || WINDOWS_WSA || WINDOWS_PHONE
                 request.Headers[HttpRequestHeader.ContentLength] = this.payloadData.Length.ToString();
 #else
                 request.ContentLength = payloadData.Length;
@@ -73,6 +73,8 @@ namespace GameAnalyticsSDK.Net.Tasks
 
 #if WINDOWS_UWP || WINDOWS_WSA
                 using (Stream dataStream = await request.GetRequestStreamAsync())
+#elif WINDOWS_PHONE
+				using (Stream dataStream = await Task.Factory.FromAsync<Stream>(request.BeginGetRequestStream, request.EndGetRequestStream, null))
 #else
                 using (Stream dataStream = request.GetRequestStream())
 #endif
@@ -82,6 +84,8 @@ namespace GameAnalyticsSDK.Net.Tasks
 
 #if WINDOWS_UWP || WINDOWS_WSA
                 using (HttpWebResponse response = await request.GetResponseAsync() as HttpWebResponse)
+#elif WINDOWS_PHONE
+				using (WebResponse response = await Task.Factory.FromAsync<WebResponse>(request.BeginGetResponse, request.EndGetResponse, null))
 #else
                 using(HttpWebResponse response = request.GetResponse() as HttpWebResponse)
 #endif

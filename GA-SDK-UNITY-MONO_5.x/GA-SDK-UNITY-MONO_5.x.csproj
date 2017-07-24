@@ -88,6 +88,15 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
 	<AssemblyName>GameAnalytics.Tizen</AssemblyName>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Unity523_release|AnyCPU'">
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\Unity523_release</OutputPath>
+    <DefineConstants>UNITY_5; UNITY; UNITY_5_2_3;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <AssemblyName>GameAnalytics</AssemblyName>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core">

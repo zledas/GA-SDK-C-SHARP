@@ -8,7 +8,7 @@ using GameAnalyticsSDK.Net.State;
 using GameAnalyticsSDK.Net.Validators;
 using System.Collections.Generic;
 using GameAnalyticsSDK.Net.Tasks;
-#if !WINDOWS_UWP && !WINDOWS_WSA
+#if !WINDOWS_UWP && !WINDOWS_WSA && !WINDOWS_PHONE
 using System.Security.Cryptography.X509Certificates;
 using System.Net.Security;
 #endif
@@ -16,6 +16,9 @@ using System.Net.Security;
 using System.Threading.Tasks;
 using Windows.Networking.Connectivity;
 using GameAnalyticsSDK.Net.Device;
+#endif
+#if WINDOWS_PHONE
+using System.Threading.Tasks;
 #endif
 
 namespace GameAnalyticsSDK.Net.Http
@@ -58,7 +61,7 @@ namespace GameAnalyticsSDK.Net.Http
 			this.eventsUrlPath = "events";
 
 			this.useGzip = true;
-#if !WINDOWS_UWP && !WINDOWS_WSA
+#if !WINDOWS_UWP && !WINDOWS_WSA && !WINDOWS_PHONE
             ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
 #endif
 #if WINDOWS_UWP || WINDOWS_WSA
@@ -100,7 +103,7 @@ namespace GameAnalyticsSDK.Net.Http
         }
 #endif
 
-#if !WINDOWS_UWP && !WINDOWS_WSA
+#if !WINDOWS_UWP && !WINDOWS_WSA && !WINDOWS_PHONE
         private bool MyRemoteCertificateValidationCallback(System.Object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
         {
             bool isOk = true;
@@ -129,7 +132,7 @@ namespace GameAnalyticsSDK.Net.Http
 
         #region Public methods
 
-#if WINDOWS_UWP || WINDOWS_WSA
+#if WINDOWS_UWP || WINDOWS_WSA || WINDOWS_PHONE
         public async Task<KeyValuePair<EGAHTTPApiResponse, JSONClass>> RequestInitReturningDict()
 #else
         public KeyValuePair<EGAHTTPApiResponse, JSONClass> RequestInitReturningDict()
@@ -166,6 +169,8 @@ namespace GameAnalyticsSDK.Net.Http
 				authorization = request.Headers[HttpRequestHeader.Authorization];
 #if WINDOWS_UWP || WINDOWS_WSA
                 using (Stream dataStream = await request.GetRequestStreamAsync())
+#elif WINDOWS_PHONE
+				using (Stream dataStream = await Task.Factory.FromAsync<Stream>(request.BeginGetRequestStream, request.EndGetRequestStream, null))
 #else
                 using(Stream dataStream = request.GetRequestStream())
 #endif
@@ -175,6 +180,8 @@ namespace GameAnalyticsSDK.Net.Http
 
 #if WINDOWS_UWP || WINDOWS_WSA
                 using (HttpWebResponse response = await request.GetResponseAsync() as HttpWebResponse)
+#elif WINDOWS_PHONE
+				using (WebResponse response = await Task.Factory.FromAsync<WebResponse>(request.BeginGetResponse, request.EndGetResponse, null))
 #else
                 using(HttpWebResponse response = request.GetResponse() as HttpWebResponse)
 #endif
@@ -185,8 +192,8 @@ namespace GameAnalyticsSDK.Net.Http
                         {
                             string responseString = reader.ReadToEnd();
 
-                            responseCode = response.StatusCode;
-                            responseDescription = response.StatusDescription;
+                            responseCode = ((HttpWebResponse)response).StatusCode;
+                            responseDescription = ((HttpWebResponse)response).StatusDescription;
 
                             // print result
                             body = responseString;
@@ -271,7 +278,7 @@ namespace GameAnalyticsSDK.Net.Http
             return new KeyValuePair<EGAHTTPApiResponse, JSONClass>(result, json);
         }
 
-#if WINDOWS_UWP || WINDOWS_WSA
+#if WINDOWS_UWP || WINDOWS_WSA || WINDOWS_PHONE
         public async Task<KeyValuePair<EGAHTTPApiResponse, JSONNode>> SendEventsInArray(List<JSONNode> eventArray)
 #else
         public KeyValuePair<EGAHTTPApiResponse, JSONNode> SendEventsInArray(List<JSONNode> eventArray)
@@ -313,6 +320,8 @@ namespace GameAnalyticsSDK.Net.Http
 				authorization = request.Headers[HttpRequestHeader.Authorization];
 #if WINDOWS_UWP || WINDOWS_WSA
                 using (Stream dataStream = await request.GetRequestStreamAsync())
+#elif WINDOWS_PHONE
+				using (Stream dataStream = await Task.Factory.FromAsync<Stream>(request.BeginGetRequestStream, request.EndGetRequestStream, null))
 #else
                 using(Stream dataStream = request.GetRequestStream())
 #endif
@@ -322,6 +331,8 @@ namespace GameAnalyticsSDK.Net.Http
 
 #if WINDOWS_UWP || WINDOWS_WSA
                 using (HttpWebResponse response = await request.GetResponseAsync() as HttpWebResponse)
+#elif WINDOWS_PHONE
+				using (WebResponse response = await Task.Factory.FromAsync<WebResponse>(request.BeginGetResponse, request.EndGetResponse, null))
 #else
                 using(HttpWebResponse response = request.GetResponse() as HttpWebResponse)
 #endif
@@ -332,8 +343,8 @@ namespace GameAnalyticsSDK.Net.Http
                         {
                             string responseString = reader.ReadToEnd();
 
-                            responseCode = response.StatusCode;
-                            responseDescription = response.StatusDescription;
+                            responseCode = ((HttpWebResponse)response).StatusCode;
+                            responseDescription = ((HttpWebResponse)response).StatusDescription;
 
                             // print result
                             body = responseString;
@@ -487,7 +498,7 @@ namespace GameAnalyticsSDK.Net.Http
             //request.Headers[HttpRequestHeader.ContentLength] = payloadData.Length.ToString();
             // Bug setting Content Length on WSA
 #else
-            request.ContentLength = payloadData.Length;
+            request.ContentLength = payloadData.Length; // TODO: ZL: kažin, ar čia gerai taip WP8
 #endif
 
             if (gzip)

@@ -25,6 +25,7 @@ Global
 		Release|Any CPU = Release|Any CPU
 		SamsungTVDebug|Any CPU = SamsungTVDebug|Any CPU
 		SamsungTVRelease|Any CPU = SamsungTVRelease|Any CPU
+		Unity523_release|Any CPU = Unity523_release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{E3A7E6A2-6482-4C90-B9BE-259DA9015EEC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -35,6 +36,8 @@ Global
 		{E3A7E6A2-6482-4C90-B9BE-259DA9015EEC}.SamsungTVDebug|Any CPU.Build.0 = Debug|Any CPU
 		{E3A7E6A2-6482-4C90-B9BE-259DA9015EEC}.SamsungTVRelease|Any CPU.ActiveCfg = Release|Any CPU
 		{E3A7E6A2-6482-4C90-B9BE-259DA9015EEC}.SamsungTVRelease|Any CPU.Build.0 = Release|Any CPU
+		{E3A7E6A2-6482-4C90-B9BE-259DA9015EEC}.Unity523_release|Any CPU.ActiveCfg = Release|Any CPU
+		{E3A7E6A2-6482-4C90-B9BE-259DA9015EEC}.Unity523_release|Any CPU.Build.0 = Release|Any CPU
 		{E3A7E6A1-6482-4C90-B9BE-259DA9015EEC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E3A7E6A1-6482-4C90-B9BE-259DA9015EEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E3A7E6A1-6482-4C90-B9BE-259DA9015EEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -43,6 +46,8 @@ Global
 		{E3A7E6A1-6482-4C90-B9BE-259DA9015EEC}.SamsungTVDebug|Any CPU.Build.0 = SamsungTVDebug|Any CPU
 		{E3A7E6A1-6482-4C90-B9BE-259DA9015EEC}.SamsungTVRelease|Any CPU.ActiveCfg = SamsungTVRelease|Any CPU
 		{E3A7E6A1-6482-4C90-B9BE-259DA9015EEC}.SamsungTVRelease|Any CPU.Build.0 = SamsungTVRelease|Any CPU
+		{E3A7E6A1-6482-4C90-B9BE-259DA9015EEC}.Unity523_release|Any CPU.ActiveCfg = Unity523_release|Any CPU
+		{E3A7E6A1-6482-4C90-B9BE-259DA9015EEC}.Unity523_release|Any CPU.Build.0 = Unity523_release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -14,6 +14,9 @@ using Windows.System.UserProfile;
 using Windows.Foundation.Metadata;
 using Windows.Storage.Streams;
 #endif
+#if WINDOWS_PHONE
+using Windows.Storage;
+#endif
 
 namespace GameAnalyticsSDK.Net.Device
 {
@@ -23,6 +26,8 @@ namespace GameAnalyticsSDK.Net.Device
         private const string _sdkWrapperVersion = "uwp 1.1.6";
 #elif WINDOWS_WSA
         private const string _sdkWrapperVersion = "wsa 1.1.6";
+#elif WINDOWS_PHONE
+		private const string _sdkWrapperVersion = "wp8 1.1.6";
 #else
         private const string _sdkWrapperVersion = "mono 1.1.6";
 #endif
@@ -36,16 +41,20 @@ namespace GameAnalyticsSDK.Net.Device
         private static readonly string _deviceModel = GetDeviceModel();
         private static readonly string _advertisingId = AdvertisingManager.AdvertisingId;
         private static string _deviceId = GetDeviceId();
+#elif WINDOWS_PHONE
+        private static readonly string _deviceModel = GetDeviceModel(); // TODO: ZL: čia reikia teisingas reikšmes
+        private static readonly string _advertisingId = "";//AdvertisingManager.AdvertisingId; // TODO: ZL: čia reikia teisingas reikšmes
+        private static string _deviceId = GetDeviceId(); // TODO: ZL: čia reikia teisingas reikšmes
 #else
-        private static readonly string _deviceModel = "unknown";
+        private static readonly string _deviceModel = "unknown"; 
 #endif
         private static string _writablepath = GetPersistentPath();
 #endif
         private static readonly string _osVersion = GetOSVersionString();
-#if WINDOWS_UWP || WINDOWS_WSA
-        private static readonly string _deviceManufacturer = GetDeviceManufacturer();
+#if WINDOWS_UWP || WINDOWS_WSA || WINDOWS_PHONE
+        private static readonly string _deviceManufacturer = GetDeviceManufacturer(); // TODO: ZL: čia reikia teisingas reikšmes
 #else
-        private static readonly string _deviceManufacturer = "unknown";
+        private static readonly string _deviceManufacturer = "unknown"; 
 #endif
 
         public static void Touch()
@@ -331,13 +340,18 @@ namespace GameAnalyticsSDK.Net.Device
 #elif WINDOWS_WSA
             // Always 8.1 on Universal Windows 8.1
             return BuildPlatform + " 8";
+#elif WINDOWS_PHONE
+            Version v = Environment.OSVersion.Version; // TODO: ZL: pažiūrėti, ką grąžina WP8
+			return BuildPlatform + string.Format(" {0}.{1}", v.Major, v.Minor);
 #else
             Version v = Environment.OSVersion.Version;
 			return BuildPlatform + string.Format(" {0}.{1}.{2}", v.Major, v.Minor, v.Build);
 #endif
 		}
 
-#if WINDOWS_UWP || WINDOWS_WSA
+#if WINDOWS_UWP || WINDOWS_WSA || WINDOWS_PHONE
+
+#if !WINDOWS_PHONE
         private static string GetDeviceId()
         {
             string result = "";
@@ -370,6 +384,24 @@ namespace GameAnalyticsSDK.Net.Device
             EasClientDeviceInformation eas = new EasClientDeviceInformation();
             return eas.SystemProductName;
         }
+#else
+        private static string GetDeviceId()
+        {
+            string result = "WP8";
+
+            return result; // TODO:...
+        }
+
+        private static string GetDeviceManufacturer()
+        {
+            return "WP8"; // TODO:...
+        }
+
+        private static string GetDeviceModel()
+        {
+            return "WP8"; // TODO:...
+        }
+#endif
 
 #if WINDOWS_UWP
         private static string RuntimePlatformToString()
@@ -406,6 +438,12 @@ namespace GameAnalyticsSDK.Net.Device
                         return AnalyticsInfo.VersionInfo.DeviceFamily;
                     }
             }
+        }
+#elif WINDOWS_PHONE
+        private static string RuntimePlatformToString()
+        {
+             return "windows_phone";
+
         }
 #else
         private static string RuntimePlatformToString()
@@ -477,7 +515,7 @@ namespace GameAnalyticsSDK.Net.Device
 
         private static string GetPersistentPath()
 		{
-#if WINDOWS_UWP || WINDOWS_WSA
+#if WINDOWS_UWP || WINDOWS_WSA || WINDOWS_PHONE
             System.Threading.Tasks.Task<StorageFolder> gaFolderTask = System.Threading.Tasks.Task.Run<StorageFolder>(async() => await ApplicationData.Current.LocalFolder.CreateFolderAsync("GameAnalytics", CreationCollisionOption.OpenIfExists));
             return gaFolderTask.GetAwaiter().GetResult().Path;
 #else

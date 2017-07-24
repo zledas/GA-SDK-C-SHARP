@@ -11,6 +11,10 @@ using Windows.UI.Xaml;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Core;
 #endif
+#if WINDOWS_PHONE
+using Windows.ApplicationModel;
+using Windows.ApplicationModel.Core;
+#endif
 
 namespace GameAnalyticsSDK.Net
 {
@@ -175,7 +179,7 @@ namespace GameAnalyticsSDK.Net
 
 		public static void Initialize(string gameKey, string gameSecret)
 		{
-#if WINDOWS_UWP || WINDOWS_WSA
+#if WINDOWS_UWP || WINDOWS_WSA || WINDOWS_PHONE
             CoreApplication.Suspending += OnSuspending;
             CoreApplication.Resuming += OnResuming;
 #endif
@@ -205,7 +209,7 @@ namespace GameAnalyticsSDK.Net
             });
 		}
 
-#if WINDOWS_UWP || WINDOWS_WSA
+#if WINDOWS_UWP || WINDOWS_WSA || WINDOWS_PHONE
         private static void OnSuspending(object sender, SuspendingEventArgs e)
         {
             var deferral = e.SuspendingOperation.GetDeferral();

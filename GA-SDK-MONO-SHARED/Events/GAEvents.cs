@@ -341,7 +341,7 @@ namespace GameAnalyticsSDK.Net.Events
 			}
 		}
 
-#if WINDOWS_UWP || WINDOWS_WSA
+#if WINDOWS_UWP || WINDOWS_WSA || WINDOWS_PHONE
         private async static void ProcessEvents(string category, bool performCleanUp)
 #else
         private static void ProcessEvents(string category, bool performCleanUp)
@@ -432,7 +432,7 @@ namespace GameAnalyticsSDK.Net.Events
 				}
 
                 // send events
-#if WINDOWS_UWP || WINDOWS_WSA
+#if WINDOWS_UWP || WINDOWS_WSA || WINDOWS_PHONE
                 KeyValuePair<EGAHTTPApiResponse, JSONNode> result = await GAHTTPApi.Instance.SendEventsInArray(payloadArray);
 #else
                 KeyValuePair<EGAHTTPApiResponse, JSONNode> result = GAHTTPApi.Instance.SendEventsInArray(payloadArray);
@@ -536,7 +536,7 @@ namespace GameAnalyticsSDK.Net.Events
 			}
         }
 
-#if WINDOWS_WSA
+#if WINDOWS_WSA || WINDOWS_PHONE
         private async static void AddEventToStore(JSONClass eventData)
 #else
         private static void AddEventToStore(JSONClass eventData)

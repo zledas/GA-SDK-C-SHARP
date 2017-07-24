@@ -1,0 +1,60 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "GA-SDK-MONO-SHARED", "GA-SDK-MONO-SHARED\GA-SDK-MONO-SHARED.shproj", "{1577D2E0-959B-4106-A7D8-D77B41C09F0C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GA-SDK-WP8", "GA-SDK-WP8\GA-SDK-WP8.csproj", "{75F6080F-34AD-418A-85D6-32C39533E2DC}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "GA-SDK-MONO-UNITY-SHARED", "GA-SDK-MONO-UNITY-SHARED\GA-SDK-MONO-UNITY-SHARED.shproj", "{1577D2E0-959B-4106-A7D8-D77B41C09F0D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GA-SDK-UNITY-EDITOR", "GA-SDK-UNITY-EDITOR\GA-SDK-UNITY-EDITOR.csproj", "{4D86D29D-626F-4A8A-8285-24FDBDD41E09}"
+EndProject
+Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		GA-SDK-MONO-SHARED\GA-SDK-MONO-SHARED.projitems*{1577d2e0-959b-4106-a7d8-d77b41c09f0c}*SharedItemsImports = 13
+		GA-SDK-MONO-UNITY-SHARED\GA-SDK-MONO-UNITY-SHARED.projitems*{1577d2e0-959b-4106-a7d8-d77b41c09f0d}*SharedItemsImports = 13
+		GA-SDK-MONO-SHARED\GA-SDK-MONO-SHARED.projitems*{4d86d29d-626f-4a8a-8285-24fdbdd41e09}*SharedItemsImports = 4
+		GA-SDK-MONO-UNITY-SHARED\GA-SDK-MONO-UNITY-SHARED.projitems*{4d86d29d-626f-4a8a-8285-24fdbdd41e09}*SharedItemsImports = 4
+		GA-SDK-MONO-SHARED\GA-SDK-MONO-SHARED.projitems*{75f6080f-34ad-418a-85d6-32c39533e2dc}*SharedItemsImports = 4
+		GA-SDK-MONO-UNITY-SHARED\GA-SDK-MONO-UNITY-SHARED.projitems*{75f6080f-34ad-418a-85d6-32c39533e2dc}*SharedItemsImports = 4
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|ARM = Debug|ARM
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|ARM = Release|ARM
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{75F6080F-34AD-418A-85D6-32C39533E2DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{75F6080F-34AD-418A-85D6-32C39533E2DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{75F6080F-34AD-418A-85D6-32C39533E2DC}.Debug|ARM.ActiveCfg = Debug|ARM
+		{75F6080F-34AD-418A-85D6-32C39533E2DC}.Debug|ARM.Build.0 = Debug|ARM
+		{75F6080F-34AD-418A-85D6-32C39533E2DC}.Debug|x86.ActiveCfg = Debug|x86
+		{75F6080F-34AD-418A-85D6-32C39533E2DC}.Debug|x86.Build.0 = Debug|x86
+		{75F6080F-34AD-418A-85D6-32C39533E2DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{75F6080F-34AD-418A-85D6-32C39533E2DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{75F6080F-34AD-418A-85D6-32C39533E2DC}.Release|ARM.ActiveCfg = Release|ARM
+		{75F6080F-34AD-418A-85D6-32C39533E2DC}.Release|ARM.Build.0 = Release|ARM
+		{75F6080F-34AD-418A-85D6-32C39533E2DC}.Release|x86.ActiveCfg = Release|x86
+		{75F6080F-34AD-418A-85D6-32C39533E2DC}.Release|x86.Build.0 = Release|x86
+		{4D86D29D-626F-4A8A-8285-24FDBDD41E09}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D86D29D-626F-4A8A-8285-24FDBDD41E09}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D86D29D-626F-4A8A-8285-24FDBDD41E09}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{4D86D29D-626F-4A8A-8285-24FDBDD41E09}.Debug|ARM.Build.0 = Debug|Any CPU
+		{4D86D29D-626F-4A8A-8285-24FDBDD41E09}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{4D86D29D-626F-4A8A-8285-24FDBDD41E09}.Debug|x86.Build.0 = Debug|Any CPU
+		{4D86D29D-626F-4A8A-8285-24FDBDD41E09}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D86D29D-626F-4A8A-8285-24FDBDD41E09}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4D86D29D-626F-4A8A-8285-24FDBDD41E09}.Release|ARM.ActiveCfg = Release|Any CPU
+		{4D86D29D-626F-4A8A-8285-24FDBDD41E09}.Release|ARM.Build.0 = Release|Any CPU
+		{4D86D29D-626F-4A8A-8285-24FDBDD41E09}.Release|x86.ActiveCfg = Release|Any CPU
+		{4D86D29D-626F-4A8A-8285-24FDBDD41E09}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

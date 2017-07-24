@@ -1,8 +1,10 @@
 ﻿using System;
-#if WINDOWS_UWP || WINDOWS_WSA
+#if WINDOWS_UWP || WINDOWS_WSA || WINDOWS_PHONE
 using Windows.Foundation.Diagnostics;
+#if !WINDOWS_PHONE
 using MetroLog;
 using MetroLog.Targets;
+#endif
 #elif MONO
 using NLog;
 using NLog.Config;
@@ -13,6 +15,30 @@ using System.IO;
 
 namespace GameAnalyticsSDK.Net.Logging
 {
+
+#if WINDOWS_PHONE
+
+	class ILogger {
+		public void LogError(string str) {
+			
+		}
+
+		public void LogWarning(string str) {
+			
+		}
+		
+		public void LogDebug(string str) {
+			
+		}
+
+		public void LogInformation(string str) {
+			
+		}
+	}
+
+#endif
+
+
 	internal class GALogger
 	{
 #region Fields and properties

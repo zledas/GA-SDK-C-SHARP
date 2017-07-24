@@ -7,10 +7,19 @@ using SqliteDataReader = System.Data.SQLite.SQLiteDataReader;
 using SqliteException = System.Data.SQLite.SQLiteException;
 using SqliteConnectionStringBuilder = System.Data.SQLite.SQLiteConnectionStringBuilder;
 #elif WINDOWS_WSA || !UNITY || WINDOWS_UWP
+#if WINDOWS_PHONE
+using SQLite;
+using SqliteConnection = SQLite.SQLiteConnection;
+using SqliteCommand = SQLite.SQLiteCommand;
+using SqliteException = SQLite.SQLiteException;
+#else
 using Microsoft.Data.Sqlite;
+#endif
 using System.Reflection;
 #else
+#if !UNITY_EDITOR
 using Mono.Data.Sqlite;
+#endif
 #endif
 using System.Collections.Generic;
 using GameAnalyticsSDK.Net.Utilities;
@@ -20,7 +29,7 @@ using System.IO;
 #if UNITY_SAMSUNGTV
 using System.Runtime.InteropServices;
 #endif
-#if WINDOWS_WSA
+#if WINDOWS_WSA || WINDOWS_PHONE
 using Windows.Storage;
 using Windows.Storage.FileProperties;
 using System.Threading.Tasks;
@@ -60,12 +69,14 @@ namespace GameAnalyticsSDK.Net.Store
 		// using a "writablePath" that needs to be set into the C++ component before
 		private string dbPath = "";
 
+		#if !UNITY_EDITOR
 		// local pointer to database
 		private SqliteConnection SqlDatabase
 		{
 			get;
 			set;
 		}
+		#endif
 
 		private bool DbReady
 		{
@@ -103,6 +114,7 @@ namespace GameAnalyticsSDK.Net.Store
 			return ExecuteQuerySync(sql, parameters, false);
 		}
 
+		#if !WINDOWS_PHONE
 		public static JSONArray ExecuteQuerySync(string sql, Dictionary<string, object> parameters, bool useTransaction)
 		{
 			// Force transaction if it is an update, insert or delete.
@@ -216,8 +228,95 @@ namespace GameAnalyticsSDK.Net.Store
 			return results;
 		}
 
+		#else
+		public static JSONArray ExecuteQuerySync(string sql, Dictionary<string, object> parameters, bool useTransaction)
+		{
+			#if !UNITY_EDITOR
+			// Force transaction if it is an update, insert or delete.
+			if (GAUtilities.StringMatch(sql.ToUpperInvariant(), "^(UPDATE|INSERT|DELETE)"))
+			{
+				useTransaction = true;
+			}
+
+			// Get database connection from singelton sharedInstance
+			SqliteConnection sqlDatabasePtr = Instance.SqlDatabase;
+
+			// Create mutable array for results
+			JSONArray results = new JSONArray();
+
+			SqliteCommand command = null;
+
+			try
+			{
+				if (useTransaction)
+				{
+					sqlDatabasePtr.BeginTransaction();
+				}
+
+				command = sqlDatabasePtr.CreateCommand();
+
+				command.CommandText = sql;
+
+				// Bind parameters
+				if (parameters.Count != 0)
+				{
+					foreach(KeyValuePair<string, object> pair in parameters)
+					{
+						command.Bind(pair.Key, pair.Value);
+                    }
+				}
+
+				// Loop through results
+				foreach (List<Tuple<string, string>> reader in command.ExecuteQueryMY()) {
+                    // get columns count
+                    int columnCount = reader.Count;
+
+                    JSONClass row = new JSONClass();
+					for (int i = 0; i < columnCount; i++)
+					{
+						string column = reader[i].Item1;
+
+						if(string.IsNullOrEmpty(column))
+						{
+							continue;
+						}
+
+                        row[column] = reader[i].Item2.ToString();
+                    }
+					results.Add(row);
+				}
+				
+
+				if (useTransaction)
+				{
+					//transaction.Commit();
+					sqlDatabasePtr.Commit();
+				}
+			}
+			catch (SqliteException e)
+			{
+				// TODO(nikolaj): Should we do a db validation to see if the db is corrupt here?
+				GALogger.E("SQLITE3 ERROR: " + e);
+				results = null;
+
+				
+			}
+			finally
+			{
+				
+			}
+
+			// Return results
+			return results;
+			#else
+			return null;
+			#endif
+		}
+		#endif
+
 		public static bool EnsureDatabase(bool dropDatabase)
 		{
+			#if !UNITY_EDITOR
 			// lazy creation of db path
 			if(string.IsNullOrEmpty(Instance.dbPath))
 			{
@@ -231,7 +330,7 @@ namespace GameAnalyticsSDK.Net.Store
 			// Open database
 			try
 			{
-#if UNITY
+#if UNITY || WINDOWS_PHONE
                 Instance.SqlDatabase = new SqliteConnection("URI=file:" + Instance.dbPath + ";Version=3");
 #else
                 Instance.SqlDatabase = new SqliteConnection(new SqliteConnectionStringBuilder
@@ -239,7 +338,9 @@ namespace GameAnalyticsSDK.Net.Store
                     DataSource = Instance.dbPath
                 } + "");
 #endif
+				#if !WINDOWS_PHONE
                 Instance.SqlDatabase.Open();
+				#endif
 				Instance.DbReady = true;
 				GALogger.I("Database opened: " + Instance.dbPath);
 			}
@@ -349,11 +450,15 @@ namespace GameAnalyticsSDK.Net.Store
 			GALogger.D("Database tables ensured present");
 
 			return true;
+			#else
+			return false;
+			#endif
 		}
 
 #pragma warning disable 0162
         public static void SetState(string key, string value)
 		{
+			#if !UNITY_EDITOR
 			if (value == null)
 			{
 
@@ -393,6 +498,7 @@ namespace GameAnalyticsSDK.Net.Store
                     ExecuteQuerySync("INSERT OR REPLACE INTO ga_state (key, value) VALUES($key, $value);", parameterArray, true);
                 }
 			}
+			#endif
 		}
 #pragma warning restore 0162
 
@@ -400,7 +506,7 @@ namespace GameAnalyticsSDK.Net.Store
         {
             get
             {
-#if WINDOWS_WSA
+#if WINDOWS_WSA || WINDOWS_PHONE
                 Task<StorageFile> fileTask = Task.Run<StorageFile>(async () => await StorageFile.GetFileFromPathAsync(Instance.dbPath));
                 StorageFile file = fileTask.GetAwaiter().GetResult();
                 Task<BasicProperties> propertiesTask = Task.Run<BasicProperties>(async () => await file.GetBasicPropertiesAsync());

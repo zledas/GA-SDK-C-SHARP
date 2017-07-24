@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-#if WINDOWS_WSA || WINDOWS_UWP
+#if WINDOWS_WSA || WINDOWS_UWP || WINDOWS_PHONE
 using Windows.System.Threading;
 using System.Threading.Tasks;
 #else
@@ -53,7 +53,7 @@ namespace GameAnalyticsSDK.Net.Threading
 					}
 
 
-#if WINDOWS_WSA || WINDOWS_UWP
+#if WINDOWS_WSA || WINDOWS_UWP || WINDOWS_PHONE
                     Task.Delay(1000).Wait();
 #else
                     Thread.Sleep(ThreadWaitTimeInMs);
@@ -134,7 +134,7 @@ namespace GameAnalyticsSDK.Net.Threading
 			}
 		}
 
-#if WINDOWS_WSA || WINDOWS_UWP
+#if WINDOWS_WSA || WINDOWS_UWP || WINDOWS_PHONE
         public async static void StartThread()
 #else
         public static void StartThread()
@@ -144,7 +144,7 @@ namespace GameAnalyticsSDK.Net.Threading
             if (!shouldThreadrun)
 			{
 				shouldThreadrun = true;
-#if WINDOWS_WSA || WINDOWS_UWP
+#if WINDOWS_WSA || WINDOWS_UWP || WINDOWS_PHONE
             	await ThreadPool.RunAsync(o => Run());
 #else
 				Thread thread = new Thread(new ThreadStart(Run));

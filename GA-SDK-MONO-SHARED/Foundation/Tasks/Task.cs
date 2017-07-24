@@ -5,7 +5,7 @@ using System.Collections.Generic;
 #if UNITY
 using UnityEngine;
 #endif
-#if WINDOWS_WSA || WINDOWS_UWP
+#if WINDOWS_WSA || WINDOWS_UWP || WINDOWS_PHONE
 using Windows.System.Threading;
 #else
 using System.Threading;
@@ -86,7 +86,11 @@ namespace Foundation.Tasks
     ///</example>
     public partial class AsyncTask :
 #if UNITY_5
+	#if UNITY_5_2_3
+	MyCustomYieldInstruction,
+	#else
 	CustomYieldInstruction,
+	#endif
 #endif
 	IDisposable
     {
@@ -264,7 +268,7 @@ namespace Foundation.Tasks
 
 
 
-#if WINDOWS_WSA || WINDOWS_UWP
+#if WINDOWS_WSA || WINDOWS_UWP || WINDOWS_PHONE
         protected async void RunOnBackgroundThread()
         {
             Status = TaskStatus.Pending;

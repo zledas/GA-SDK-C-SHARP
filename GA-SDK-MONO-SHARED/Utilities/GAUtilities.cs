@@ -2,7 +2,7 @@
 using System.Text.RegularExpressions;
 using System.Text;
 using System.Collections.Generic;
-#if UNITY
+#if UNITY || WINDOWS_PHONE
 using GameAnalyticsSDK.Net.Utilities.Zip.GZip;
 #else
 using System.IO.Compression;
@@ -31,7 +31,7 @@ namespace GameAnalyticsSDK.Net.Utilities
 
 			byte[] result;
 
-#if !UNITY
+#if !UNITY && !WINDOWS_PHONE
             using (MemoryStream msi = new MemoryStream(Encoding.UTF8.GetBytes(data)))
             {
                 using (MemoryStream mso = new MemoryStream())
