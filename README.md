@@ -5,23 +5,29 @@ Documentation is in the [wiki](https://github.com/GameAnalytics/GA-SDK-C-SHARP/w
 
 > :information_source:<br>
 >
-> This repository is open-source and can be built to Mono / .Net 4.5, Universal Windows Platform (UWP) and Universal Windows 8.1 (Windows 8.1 and Windows Phone 8.1).<br>
+> This repository is open-source and can be built to Mono / .Net 4.5, Universal Windows Platform (UWP) and Universal Windows 8.1 (Windows 8.1 and Windows Phone 8.1).    
 >
-> How to build: Click [here](How to build)<br>
+> How to build: Click [here](How-to-build)    
 >
-> **Mono / .Net 4.5**:<br>
-> Supported platforms: Windows, Mac OS X and Linux<br>
-> Requirements:  Mono / .Net 4.5 or higher<br>
+> **Mono / .Net 4.5**:    
+> Supported platforms: Windows, Mac OS X and Linux    
+> Requirements:  Mono / .Net 4.5 or higher    
 >
-> **UWP**:<br>
-> Requirements: Windows 10 Universal SDK<br>
+> **UWP**:    
+> Requirements: Windows 10 Universal SDK    
 >
-> **Universal Windows 8.1**:<br>
+> **Universal Windows 8.1**:    
 > Requirements: Windows 8 or higher
 
 Changelog
 ---------
 <!--(CHANGELOG_TOP)-->
+**1.1.8**
+* bug fix for end session when using manual session handling
+
+**1.1.7**
+* session length precision improvement
+
 **1.1.6**
 * minor improvements on background thread
 
@@ -69,7 +75,7 @@ Add this to the top of each class you use the GameAnalytics SDK in:
  using GameAnalyticsSDK.Net;
 ```
 
-####Configuration
+#### Configuration
 
 Example:
 
@@ -87,7 +93,7 @@ GameAnalytics.ConfigureAvailableCustomDimensions02("whale", "dolpin");
 GameAnalytics.ConfigureAvailableCustomDimensions03("horde", "alliance");
 ```
 
-####Initialization
+#### Initialization
 
 Example:
 
@@ -95,7 +101,7 @@ Example:
 GameAnalytics.Initialize("<your_game_key>", "<your_secret_key>");
 ```
 
-####Send events
+#### Send events
 
 Example:
 
