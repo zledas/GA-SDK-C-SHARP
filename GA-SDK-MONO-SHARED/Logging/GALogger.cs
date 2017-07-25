@@ -20,19 +20,19 @@ namespace GameAnalyticsSDK.Net.Logging
 
 	class ILogger {
 		public void LogError(string str) {
-			
+			System.Diagnostics.Debug.WriteLine("ERROR: " + str);
 		}
 
 		public void LogWarning(string str) {
-			
+			System.Diagnostics.Debug.WriteLine("WARNING: " + str);
 		}
 		
 		public void LogDebug(string str) {
-			
+			System.Diagnostics.Debug.WriteLine("DEBUG: " + str);
 		}
 
 		public void LogInformation(string str) {
-			
+			System.Diagnostics.Debug.WriteLine("INFO: " + str);
 		}
 	}
 
@@ -125,6 +125,10 @@ namespace GameAnalyticsSDK.Net.Logging
 			config.LoggingRules.Add(rule2);
 
 			LogManager.Configuration = config;
+#endif
+
+#if WINDOWS_PHONE
+			logger = new ILogger();
 #endif
         }
 
