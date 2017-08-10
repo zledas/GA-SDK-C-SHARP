@@ -498,7 +498,7 @@ namespace GameAnalyticsSDK.Net.Http
             //request.Headers[HttpRequestHeader.ContentLength] = payloadData.Length.ToString();
             // Bug setting Content Length on WSA
 #else
-            request.ContentLength = payloadData.Length; // TODO: ZL: kažin, ar čia gerai taip WP8
+            request.ContentLength = payloadData.Length;
 #endif
 
             if (gzip)

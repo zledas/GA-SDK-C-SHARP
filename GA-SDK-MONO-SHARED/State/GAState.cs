@@ -619,7 +619,7 @@ namespace GameAnalyticsSDK.Net.State
 				annotations["engine_version"] = GADevice.GameEngineVersion;
 			}
 
-#if WINDOWS_UWP // TODO: čia irgi WP8 pažiūrėti, kas darytis turi
+#if WINDOWS_UWP
             if (!string.IsNullOrEmpty(GADevice.AdvertisingId))
             {
                 annotations["uwp_aid"] = GADevice.AdvertisingId;
@@ -741,7 +741,7 @@ namespace GameAnalyticsSDK.Net.State
 			{
 				GAState.Identifier = GAState.UserId;
 			}
-#if WINDOWS_UWP
+#if WINDOWS_UWP || WINDOWS_PHONE
             else if (!string.IsNullOrEmpty(GADevice.AdvertisingId))
             {
                 GAState.Identifier = GADevice.AdvertisingId;

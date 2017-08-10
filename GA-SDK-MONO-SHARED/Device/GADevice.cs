@@ -42,9 +42,9 @@ namespace GameAnalyticsSDK.Net.Device
         private static readonly string _advertisingId = AdvertisingManager.AdvertisingId;
         private static string _deviceId = GetDeviceId();
 #elif WINDOWS_PHONE
-        private static readonly string _deviceModel = GetDeviceModel(); // TODO: ZL: čia reikia teisingas reikšmes
-        private static readonly string _advertisingId = "";//AdvertisingManager.AdvertisingId; // TODO: ZL: čia reikia teisingas reikšmes
-        private static string _deviceId = GetDeviceId(); // TODO: ZL: čia reikia teisingas reikšmes
+        private static readonly string _deviceModel = GetDeviceModel();
+        private static readonly string _advertisingId = ""; // we could use reflection to get AID if app runs on WP8.1: // var type = Type.GetType("Windows.System.UserProfile.AdvertisingManager, Windows, Version=255.255.255.255, Culture=neutral, PublicKeyToken=null, ContentType=WindowsRuntime"); return type != null ? (string) type.GetProperty("AdvertisingId").GetValue(null, null) : "";
+        private static string _deviceId = GetDeviceId();
 #else
         private static readonly string _deviceModel = "unknown"; 
 #endif
@@ -52,7 +52,7 @@ namespace GameAnalyticsSDK.Net.Device
 #endif
         private static readonly string _osVersion = GetOSVersionString();
 #if WINDOWS_UWP || WINDOWS_WSA || WINDOWS_PHONE
-        private static readonly string _deviceManufacturer = GetDeviceManufacturer(); // TODO: ZL: čia reikia teisingas reikšmes
+        private static readonly string _deviceManufacturer = GetDeviceManufacturer();
 #else
         private static readonly string _deviceManufacturer = "unknown"; 
 #endif
@@ -131,7 +131,7 @@ namespace GameAnalyticsSDK.Net.Device
 			}
 		}
 
-#if WINDOWS_UWP
+#if WINDOWS_UWP || WINDOWS_PHONE
         public static string AdvertisingId
         {
             get
@@ -341,7 +341,7 @@ namespace GameAnalyticsSDK.Net.Device
             // Always 8.1 on Universal Windows 8.1
             return BuildPlatform + " 8";
 #elif WINDOWS_PHONE
-            Version v = Environment.OSVersion.Version; // TODO: ZL: pažiūrėti, ką grąžina WP8
+            Version v = Environment.OSVersion.Version;
 			return BuildPlatform + string.Format(" {0}.{1}", v.Major, v.Minor);
 #else
             Version v = Environment.OSVersion.Version;
@@ -349,9 +349,8 @@ namespace GameAnalyticsSDK.Net.Device
 #endif
 		}
 
-#if WINDOWS_UWP || WINDOWS_WSA || WINDOWS_PHONE
+#if WINDOWS_UWP || WINDOWS_WSA
 
-#if !WINDOWS_PHONE
         private static string GetDeviceId()
         {
             string result = "";
@@ -384,24 +383,6 @@ namespace GameAnalyticsSDK.Net.Device
             EasClientDeviceInformation eas = new EasClientDeviceInformation();
             return eas.SystemProductName;
         }
-#else
-        private static string GetDeviceId()
-        {
-            string result = "WP8";
-
-            return result; // TODO:...
-        }
-
-        private static string GetDeviceManufacturer()
-        {
-            return "WP8"; // TODO:...
-        }
-
-        private static string GetDeviceModel()
-        {
-            return "WP8"; // TODO:...
-        }
-#endif
 
 #if WINDOWS_UWP
         private static string RuntimePlatformToString()
@@ -439,12 +420,6 @@ namespace GameAnalyticsSDK.Net.Device
                     }
             }
         }
-#elif WINDOWS_PHONE
-        private static string RuntimePlatformToString()
-        {
-             return "windows_phone";
-
-        }
 #else
         private static string RuntimePlatformToString()
         {
@@ -468,6 +443,29 @@ namespace GameAnalyticsSDK.Net.Device
             }
         }
 #endif
+
+#elif WINDOWS_PHONE
+
+        private static string GetDeviceId()
+        {
+            return Windows.Phone.System.Analytics.HostInformation.PublisherHostId;
+        }
+
+        private static string GetDeviceManufacturer()
+        {
+            return Microsoft.Phone.Info.DeviceStatus.DeviceManufacturer;
+        }
+
+        private static string GetDeviceModel()
+        {
+            return Microsoft.Phone.Info.DeviceStatus.DeviceName;
+        }
+		
+        private static string RuntimePlatformToString()
+        {
+             return "windows_phone";
+		}
+
 #else
         private static string RuntimePlatformToString()
 		{
