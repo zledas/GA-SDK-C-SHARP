@@ -1,3 +1,9 @@
+| Mono        | UWP           | WSA  |
+| :-------------: |:-------------:| :-----:|
+| [![NuGet](https://img.shields.io/nuget/v/GameAnalytics.Mono.SDK.svg)](https://www.nuget.org/packages/GameAnalytics.Mono.SDK) [![NuGet](https://img.shields.io/nuget/dt/GameAnalytics.Mono.SDK.svg?label=nuget%20downloads)](https://www.nuget.org/packages/GameAnalytics.Mono.SDK)      | [![NuGet](https://img.shields.io/nuget/v/GameAnalytics.UWP.SDK.svg)](https://www.nuget.org/packages/GameAnalytics.UWP.SDK) [![NuGet](https://img.shields.io/nuget/dt/GameAnalytics.UWP.SDK.svg?label=nuget%20downloads)](https://www.nuget.org/packages/GameAnalytics.UWP.SDK) | [![NuGet](https://img.shields.io/nuget/v/GameAnalytics.WSA.SDK.svg)](https://www.nuget.org/packages/GameAnalytics.WSA.SDK) [![NuGet](https://img.shields.io/nuget/dt/GameAnalytics.WSA.SDK.svg?label=nuget%20downloads)](https://www.nuget.org/packages/GameAnalytics.WSA.SDK) |
+
+[![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg)](http://opensource.org/licenses/MIT)
+
 # GA-SDK-C-SHARP
 GameAnalytics Mono / .Net 4.5, Universal Windows 8 and UWP SDK.
 
@@ -22,6 +28,9 @@ Documentation is in the [wiki](https://github.com/GameAnalytics/GA-SDK-C-SHARP/w
 Changelog
 ---------
 <!--(CHANGELOG_TOP)-->
+**1.1.9**
+* small correction to use int instead of double for session num
+
 **1.1.8**
 * bug fix for end session when using manual session handling
 
